@@ -39,7 +39,8 @@ export default function App() {
   useEffect(() => {
     const fetchLatestDataset = async () => {
       try {
-        const res = await axios.get('http://localhost:8000/api/pipeline/latest-dataset')
+        const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
+        const res = await axios.get(`${API_BASE}/pipeline/latest-dataset`)
         if (res.data.dataset_id) {
           setDatasetId(res.data.dataset_id)
         }
