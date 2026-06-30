@@ -18,16 +18,31 @@ SmartSurge replicates this system: a complete ML pipeline from data ingestion to
 
 ## Architecture
 
-Raw CSV Data
-↓
-Stage 1 · Data Ingestion      → parse, merge, log to SQLite
-Stage 2 · Data Validation     → schema, nulls, outliers, quality score
-Stage 3 · Feature Engineering → 12 engineered features
-Stage 4 · Model Training      → XGBoost + Random Forest
-Stage 5 · Evaluation          → MAE, RMSE, R² comparison
-Stage 6 · Model Registry      → version, promote, rollback
-Stage 7 · Model Serving       → FastAPI + SHAP + what-if simulator
-Stage 8 · Drift Monitoring    → KS test on input distributions
+Raw CSV Data ↓
+
+### Stage 1 · Data Ingestion
+- parse, merge, log to SQLite
+
+### Stage 2 · Data Validation
+- schema, nulls, outliers, quality score
+
+### Stage 3 · Feature Engineering
+- 12 engineered features
+
+### Stage 4 · Model Training
+- XGBoost + Random Forest
+
+### Stage 5 · Evaluation
+- MAE, RMSE, R² comparison
+
+### Stage 6 · Model Registry
+- versioning, promote, rollback
+
+### Stage 7 · Model Serving
+- FastAPI + SHAP + what-if simulator
+
+### Stage 8 · Drift Monitoring
+- KS test on input distributions
 
 Pipeline can run via **one-click Auto Pipeline** or **step-by-step Manual Pipeline** — both fully tracked in SQLite.
 
