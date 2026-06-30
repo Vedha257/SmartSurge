@@ -8,10 +8,11 @@ app = FastAPI(title="SmartSurge API", version="1.0.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 os.makedirs("uploads", exist_ok=True)
 os.makedirs("models", exist_ok=True)
