@@ -12,16 +12,31 @@ MONITORED_FEATURES = [
 ]
 
 def load_training_distributions(engineered_file_path: str) -> dict:
-    """
-    Load training data and compute distribution stats per feature.
-    This becomes our baseline to compare against.
-    """
     try:
-        df = pd.read_csv(engineered_file_path)
-        distributions = {}
-        for feature in MONITORED_FEATURES:
-            if feature in df.columns:
-                distributions[feature] = df[feature].dropna().tolist()
+        # Only read the columns we actually need
+        usecols = MONITORED_FEATURES
+        
+        # Read in chunks and sample to avoid loading 1.2M rows into memory
+        sample_size = 2000
+        distributions = {f: [] for f in MONITORED_FEATURES}
+        
+        chunk_iter = pd.read_csv(
+            engineered_file_path, 
+            usecols=lambda c: c in usecols,
+            chunksize=50000
+        )
+        
+        rows_collected = 0
+        for chunk in chunk_iter:
+            for feature in MONITORED_FEATURES:
+                if feature in chunk.columns:
+                    distributions[feature].extend(
+                        chunk[feature].dropna().tolist()
+                    )
+            rows_collected += len(chunk)
+            if rows_collected >= sample_size * 3:
+                break  # stop early, we have enough sample data
+        
         return distributions
     except Exception as e:
         print(f"Could not load training distributions: {e}")
